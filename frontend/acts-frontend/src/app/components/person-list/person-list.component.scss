@@ -1,8 +1,8 @@
 $primary: #2980b9;
+$success: #27ae60;
 $secondary-bg: #eee;
 $border: #ccc;
 $error-color: #c0392b;
-$success-color: #27ae60;
 $cell-border: #e0e0e0;
 $odd-row: #f4f6f8;
 $detail-bg: #f9f9f9;
@@ -22,18 +22,7 @@ $cell-padding: 10px 14px;
 }
 
 .label {
-  display: block;
   font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.optional {
-  font-weight: 400;
-  color: #888;
-}
-
-.muted {
-  color: #888;
 }
 
 .btn {
@@ -42,45 +31,30 @@ $cell-padding: 10px 14px;
   border-radius: $border-radius;
   cursor: pointer;
 
+  &-sm {
+    padding: 4px 12px;
+  }
+
   &-primary {
     background: $primary;
+    color: white;
+  }
+
+  &-success {
+    background: $success;
     color: white;
   }
 
   &-secondary {
     background: $secondary-bg;
     border: 1px solid $border;
+    padding: 6px 14px;
   }
 }
 
 .error {
   color: $error-color;
   margin: 8px 0;
-}
-
-.success {
-  color: $success-color;
-  margin: 8px 0;
-}
-
-.form-group {
-  margin-bottom: 12px;
-
-  &:last-of-type {
-    margin-bottom: 16px;
-  }
-}
-
-.detail-card {
-  background: $detail-bg;
-  border: 1px solid $detail-border;
-  border-radius: 6px;
-  padding: 20px;
-  max-width: 400px;
-
-  h3 {
-    margin-top: 0;
-  }
 }
 
 .table {
@@ -109,7 +83,26 @@ $cell-padding: 10px 14px;
   }
 }
 
-.empty-state {
-  color: #888;
-  margin-top: 16px;
+.detail-card {
+  background: $detail-bg;
+  border: 1px solid $detail-border;
+  border-radius: 6px;
+  padding: 20px;
+  max-width: 400px;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  p {
+    margin: 0 0 12px;
+
+    &:last-of-type {
+      margin-bottom: 16px;
+    }
+  }
+
+  .toolbar {
+    margin-bottom: 16px;
+  }
 }

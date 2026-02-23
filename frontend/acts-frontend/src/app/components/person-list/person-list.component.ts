@@ -7,7 +7,8 @@ import { PersonService, Person } from '../../services/person-service';
   selector: 'app-person-list',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './person-list.component.html'
+  templateUrl: './person-list.component.html',
+  styleUrl: './person-list.component.scss'
 })
 export class PersonListComponent implements OnInit {
   people: Person[] = [];
@@ -73,19 +74,19 @@ export class PersonListComponent implements OnInit {
   }
 
   updatePerson(): void {
-    if (!this.selectedPerson) return;
+  if (!this.selectedPerson) return;
 
-    this.personService.update(this.selectedPerson.personId, this.selectedPerson).subscribe({
-      next: () => {
-        this.people = this.people.map(p =>
-          p.personId === this.selectedPerson!.personId ? { ...this.selectedPerson! } : p
-        );
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.error = 'Failed to update person.';
-        console.error(err);
-      }
-    });
-  }
+  this.personService.update(this.selectedPerson, this.selectedPerson.personId).subscribe({
+    next: () => {
+      this.people = this.people.map(p =>
+        p.personId === this.selectedPerson!.personId ? { ...this.selectedPerson! } : p
+      );
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      this.error = 'Failed to update person.';
+      console.error(err);
+    }
+  });
+}
 }

@@ -7,7 +7,8 @@ import { AstronautDutyService, AstronautDuty } from '../../services/astronaut-du
   selector: 'app-astronaut-duty',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './astronaut-duty.component.html'
+  templateUrl: './astronaut-duty.component.html',
+  styleUrl: './astronaut-duty.component.scss'
 })
 export class AstronautDutyComponent {
   // View duties

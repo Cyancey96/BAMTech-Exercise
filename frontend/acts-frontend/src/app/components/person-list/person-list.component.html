@@ -1,53 +1,53 @@
 <h2>People</h2>
 
 <!-- Add new person -->
-<div style="display:flex; align-items:center; gap:8px; margin-bottom:24px;">
+<div class="toolbar">
   <input
     type="text"
     [(ngModel)]="newPersonName"
     placeholder="Enter name"
-    style="padding:6px 10px; border:1px solid #ccc; border-radius:4px;"
+    class="input"
   />
-  <button (click)="addPerson()" style="background:#2980b9; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer;">Add Person</button>
-  <button (click)="viewPersonByName()" style="background:#eee; border:1px solid #ccc; padding:8px 16px; border-radius:4px; cursor:pointer;">View Person</button>
+  <button (click)="addPerson()" class="btn btn-primary">Add Person</button>
+  <button (click)="viewPersonByName()" class="btn btn-secondary">View Person</button>
 </div>
 
 <!-- Loading & error messages -->
 <div *ngIf="loading" class="skeleton"></div>
-<div *ngIf="error" style="color:#c0392b; margin:8px 0;">{{ error }}</div>
+<div *ngIf="error" class="error">{{ error }}</div>
 
 <!-- People list -->
-<table *ngIf="!loading && people?.length" style="width:100%; border-collapse:collapse; font-size:14px; margin-bottom:24px;">
-    <thead>
-        <tr style="background:#2980b9; color:white; text-align:left;">
-        <th style="padding:10px 14px;">ID</th>
-        <th style="padding:10px 14px;">Name</th>
-        <th style="padding:10px 14px;">Created</th>
-        <th style="padding:10px 14px;"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let person of people; let odd = odd" [style.background]="odd ? '#f4f6f8' : 'white'">
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ person.personId }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ person.name }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ person.createdAt | date }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">
-            <button (click)="viewPerson(person.personId)" style="background:#2980b9; color:white; border:none; padding:4px 12px; border-radius:4px; cursor:pointer;">View</button>
-        </td>
-        </tr>
-    </tbody>
+<table *ngIf="!loading && people?.length" class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of people; let odd = odd" [class.odd]="odd">
+      <td>{{ person.personId }}</td>
+      <td>{{ person.name }}</td>
+      <td>{{ person.createdAt | date }}</td>
+      <td>
+        <button (click)="viewPerson(person.personId)" class="btn btn-primary btn-sm">View</button>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- Person detail -->
-<div *ngIf="selectedPerson" style="background:#f9f9f9; border:1px solid #ddd; border-radius:6px; padding:20px; max-width:400px;">
-<h3 style="margin-top:0;">Person Details</h3>
-<p style="margin:0 0 12px;"><strong>ID:</strong> {{ selectedPerson.personId }}</p>
-<p style="margin:0 0 4px;"><strong>Created:</strong> {{ selectedPerson.createdAt | date }}</p>
-<p style="margin:0 0 16px;"><strong>Updated:</strong> {{ selectedPerson.updatedAt | date }}</p>
-<div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-    <label style="font-weight:600;">Name:</label>
-    <input type="text" [(ngModel)]="selectedPerson.name" style="flex:1; padding:6px 10px; border:1px solid #ccc; border-radius:4px;" />
-    <button (click)="updatePerson()" style="background:#27ae60; color:white; border:none; padding:6px 14px; border-radius:4px; cursor:pointer;">Change</button>
-</div>
-<button (click)="selectedPerson = null" style="background:#eee; border:1px solid #ccc; padding:6px 14px; border-radius:4px; cursor:pointer;">Close</button>
+<div *ngIf="selectedPerson" class="detail-card">
+  <h3>Person Details</h3>
+  <p><strong>ID:</strong> {{ selectedPerson.personId }}</p>
+  <p><strong>Created:</strong> {{ selectedPerson.createdAt | date }}</p>
+  <p><strong>Updated:</strong> {{ selectedPerson.updatedAt | date }}</p>
+  <div class="toolbar">
+    <label class="label">Name:</label>
+    <input type="text" [(ngModel)]="selectedPerson.name" class="input" />
+    <button (click)="updatePerson()" class="btn btn-success">Change</button>
+  </div>
+  <button (click)="selectedPerson = null" class="btn btn-secondary">Close</button>
 </div>
