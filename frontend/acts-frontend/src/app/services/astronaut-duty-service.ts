@@ -30,15 +30,23 @@ export class AstronautDutyService {
 
   create(duty: AstronautDuty, personName?: string): Observable<AstronautDuty> {
     let url = this.apiUrl;
-    if (personName) url += `?personName=${personName}`;
+    if (personName) url += `?personName=${encodeURIComponent(personName)}`;
     return this.http.post<AstronautDuty>(url, duty);
   }
 
-  update(id: number, duty: AstronautDuty): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, duty);
+  update(duty: AstronautDuty, id?: number, personName?: string): Observable<void> {
+    const params: string[] = [];
+    if (id) params.push(`id=${id}`);
+    if (personName) params.push(`personName=${encodeURIComponent(personName)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    return this.http.put<void>(`${this.apiUrl}${query}`, duty);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  delete(id?: number, personName?: string): Observable<void> {
+    const params: string[] = [];
+    if (id) params.push(`id=${id}`);
+    if (personName) params.push(`personName=${encodeURIComponent(personName)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    return this.http.delete<void>(`${this.apiUrl}${query}`);
   }
 }

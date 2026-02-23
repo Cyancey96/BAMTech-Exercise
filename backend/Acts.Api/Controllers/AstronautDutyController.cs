@@ -25,7 +25,6 @@ namespace Acts.Api.Controllers
                 .Include(d => d.AstronautDetail)
                 .AsQueryable();
 
-            Console.WriteLine(personName);
             if (!string.IsNullOrEmpty(personName))
                 query = query.Where(d => d.Person != null && d.Person.Name == personName);
 
@@ -41,7 +40,6 @@ namespace Acts.Api.Controllers
         {
             if (!string.IsNullOrEmpty(personName))
             {
-                // Find person by name
                 var person = await _context.Person.FirstOrDefaultAsync(p => p.Name == personName);
                 if (person == null) return NotFound($"Person with name '{personName}' not found.");
 
@@ -61,13 +59,24 @@ namespace Acts.Api.Controllers
             return CreatedAtAction(nameof(GetAstronautDuty), new { id = duty.DutyId }, duty);
         }
 
-        // PUT: api/AstronautDuty/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAstronautDuty(int id, AstronautDuty duty)
+        // PUT: api/AstronautDuty?id={id} or api/AstronautDuty?personName={name}
+        [HttpPut]
+        public async Task<IActionResult> PutAstronautDuty([FromQuery] int? id, [FromQuery] string? personName, [FromBody] AstronautDuty duty)
         {
-            if (id != duty.DutyId) return BadRequest();
+            if (!id.HasValue && string.IsNullOrEmpty(personName))
+                return BadRequest("Either id or personName must be provided.");
 
-            var existing = await _context.AstronautDuty.FindAsync(id);
+            var query = _context.AstronautDuty
+                .Include(d => d.Person)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(personName))
+                query = query.Where(d => d.Person != null && d.Person.Name == personName);
+
+            if (id.HasValue)
+                query = query.Where(d => d.DutyId == id.Value);
+
+            var existing = await query.FirstOrDefaultAsync();
             if (existing == null) return NotFound();
 
             existing.Title = duty.Title;
@@ -80,14 +89,27 @@ namespace Acts.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/AstronautDuty/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAstronautDuty(int id)
+        // DELETE: api/AstronautDuty?id={id} or api/AstronautDuty?personName={name}
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAstronautDuty([FromQuery] int? id, [FromQuery] string? personName)
         {
-            var duty = await _context.AstronautDuty.FindAsync(id);
-            if (duty == null) return NotFound();
+            if (!id.HasValue && string.IsNullOrEmpty(personName))
+                return BadRequest("Either id or personName must be provided.");
 
-            _context.AstronautDuty.Remove(duty);
+            var query = _context.AstronautDuty
+                .Include(d => d.Person)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(personName))
+                query = query.Where(d => d.Person != null && d.Person.Name == personName);
+
+            if (id.HasValue)
+                query = query.Where(d => d.DutyId == id.Value);
+
+            var duties = await query.ToListAsync();
+            if (!duties.Any()) return NotFound();
+
+            _context.AstronautDuty.RemoveRange(duties);
             await _context.SaveChangesAsync();
             return NoContent();
         }

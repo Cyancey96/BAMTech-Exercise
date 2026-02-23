@@ -157,3 +157,4 @@
 /home/chris/Source/BAMTech-Exercise/backend/Acts.Api/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/chris/Source/BAMTech-Exercise/backend/Acts.Api/bin/Debug/net8.0/runtimes/linux-musl-s390x/native/libe_sqlite3.so
 /home/chris/Source/BAMTech-Exercise/backend/Acts.Api/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
+/home/chris/Source/BAMTech-Exercise/backend/Acts.Api/obj/Debug/net8.0/Acts.Api.sourcelink.json

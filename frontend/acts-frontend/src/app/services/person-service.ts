@@ -23,21 +23,30 @@ export class PersonService {
   }
 
   getByIdOrName(id?: number, name?: string): Observable<Person[]> {
-    let url = this.apiUrl + '?';
-    if (id) url += `id=${id}&`;
-    if (name) url += `name=${name}&`;
-    return this.http.get<Person[]>(url);
+    const params: string[] = [];
+    if (id) params.push(`id=${id}`);
+    if (name) params.push(`name=${encodeURIComponent(name)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    return this.http.get<Person[]>(`${this.apiUrl}${query}`);
   }
 
   create(person: Person): Observable<Person> {
     return this.http.post<Person>(this.apiUrl, person);
   }
 
-  update(id: number, person: Person): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}?id=${id}`, person);
+  update(person: Person, id?: number, name?: string): Observable<void> {
+    const params: string[] = [];
+    if (id) params.push(`id=${id}`);
+    if (name) params.push(`name=${encodeURIComponent(name)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    return this.http.put<void>(`${this.apiUrl}${query}`, person);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}?id=${id}`);
+  delete(id?: number, name?: string): Observable<void> {
+    const params: string[] = [];
+    if (id) params.push(`id=${id}`);
+    if (name) params.push(`name=${encodeURIComponent(name)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    return this.http.delete<void>(`${this.apiUrl}${query}`);
   }
 }

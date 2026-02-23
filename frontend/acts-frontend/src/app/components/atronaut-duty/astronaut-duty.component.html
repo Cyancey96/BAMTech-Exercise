@@ -1,82 +1,81 @@
 <h2>Astronaut Duties</h2>
 
 <!-- Controls -->
-<div style="display:flex; align-items:center; gap:8px; margin-bottom:24px;">
-  <button (click)="createDuty()">Create New Duty</button>
-  <span style="color:#888;">or</span>
+<div class="toolbar">
+  <button (click)="createDuty()" class="btn btn-primary">Create New Duty</button>
+  <span class="muted">or</span>
   <input
     type="text"
     [(ngModel)]="astronautName"
     placeholder="Enter Astronaut Name"
-    style="padding:6px 10px; border:1px solid #ccc; border-radius:4px;"
+    class="input"
   />
-  <button (click)="viewDuties()">View Duties</button>
+  <button (click)="viewDuties()" class="btn btn-secondary">View Duties</button>
 </div>
 
 <!-- Status messages -->
 <div *ngIf="loading" class="skeleton"></div>
-<div *ngIf="error" style="color:#c0392b; margin:8px 0;">{{ error }}</div>
-<div *ngIf="successMessage" style="color:#27ae60; margin:8px 0;">{{ successMessage }}</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 
 <!-- Create Duty Form -->
-<div *ngIf="showCreateForm" style="background:#f9f9f9; border:1px solid #ddd; border-radius:6px; padding:20px; max-width:400px;">
-  <h3 style="margin-top:0;">New Duty</h3>
+<div *ngIf="showCreateForm" class="detail-card">
+  <h3>New Duty</h3>
 
-  <div style="margin-bottom:12px;">
-    <label style="display:block; font-weight:600; margin-bottom:4px;">Astronaut Name</label>
-    <input type="text" [(ngModel)]="newDutyPersonName" placeholder="Assign to astronaut" style="width:100%; padding:6px 10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" />
+  <div class="form-group">
+    <label class="label">Astronaut Name</label>
+    <input type="text" [(ngModel)]="newDutyPersonName" placeholder="Assign to astronaut" class="input" />
   </div>
-  <div style="margin-bottom:12px;">
-    <label style="display:block; font-weight:600; margin-bottom:4px;">Title</label>
-    <input type="text" [(ngModel)]="newDuty.title" placeholder="Duty title" style="width:100%; padding:6px 10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" />
+  <div class="form-group">
+    <label class="label">Title</label>
+    <input type="text" [(ngModel)]="newDuty.title" placeholder="Duty title" class="input" />
   </div>
-  <div style="margin-bottom:12px;">
-    <label style="display:block; font-weight:600; margin-bottom:4px;">Rank</label>
-    <input type="text" [(ngModel)]="newDuty.rank" placeholder="Rank" style="width:100%; padding:6px 10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" />
+  <div class="form-group">
+    <label class="label">Rank</label>
+    <input type="text" [(ngModel)]="newDuty.rank" placeholder="Rank" class="input" />
   </div>
-  <div style="margin-bottom:12px;">
-    <label style="display:block; font-weight:600; margin-bottom:4px;">Start Date</label>
-    <input type="date" [(ngModel)]="newDuty.startDate" style="width:100%; padding:6px 10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" />
+  <div class="form-group">
+    <label class="label">Start Date</label>
+    <input type="date" [(ngModel)]="newDuty.startDate" class="input" />
   </div>
-  <div style="margin-bottom:16px;">
-    <label style="display:block; font-weight:600; margin-bottom:4px;">End Date <span style="font-weight:400; color:#888;">(optional)</span></label>
-    <input type="date" [(ngModel)]="newDuty.endDate" style="width:100%; padding:6px 10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" />
+  <div class="form-group">
+    <label class="label">End Date <span class="optional">(optional)</span></label>
+    <input type="date" [(ngModel)]="newDuty.endDate" class="input" />
   </div>
 
-  <div style="display:flex; gap:8px;">
-    <button (click)="submitNewDuty()" style="background:#2980b9; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer;">Submit</button>
-    <button (click)="cancelCreate()" style="background:#eee; border:1px solid #ccc; padding:8px 16px; border-radius:4px; cursor:pointer;">Cancel</button>
+  <div class="toolbar">
+    <button (click)="submitNewDuty()" class="btn btn-primary">Submit</button>
+    <button (click)="cancelCreate()" class="btn btn-secondary">Cancel</button>
   </div>
 </div>
 
 <!-- Duties List -->
 <div *ngIf="!showCreateForm && duties.length > 0">
   <h3>Duties for <em>{{ searchedAstronautName }}</em></h3>
-  <table style="width:100%; border-collapse:collapse; font-size:14px; margin-bottom:24px;">
-  <thead>
-    <tr style="background:#2980b9; color:white; text-align:left;">
-      <th style="padding:10px 14px;">ID</th>
-      <th style="padding:10px 14px;">Title</th>
-      <th style="padding:10px 14px;">Rank</th>
-      <th style="padding:10px 14px;">Start Date</th>
-      <th style="padding:10px 14px;">End Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="!loading">
-      <tr *ngFor="let duty of duties; let odd = odd" [style.background]="odd ? '#f4f6f8' : 'white'">
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ duty.dutyId }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ duty.title }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ duty.rank }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ duty.startDate | date }}</td>
-        <td style="padding:10px 14px; border-bottom:1px solid #e0e0e0;">{{ duty.endDate ? (duty.endDate | date) : '—' }}</td>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Rank</th>
+        <th>Start Date</th>
+        <th>End Date</th>
       </tr>
-    </ng-container>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="!loading">
+        <tr *ngFor="let duty of duties; let odd = odd" [class.odd]="odd">
+          <td>{{ duty.dutyId }}</td>
+          <td>{{ duty.title }}</td>
+          <td>{{ duty.rank }}</td>
+          <td>{{ duty.startDate | date }}</td>
+          <td>{{ duty.endDate ? (duty.endDate | date) : '—' }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
 </div>
 
-<div *ngIf="!showCreateForm && duties.length === 0 && hasSearched && !loading" style="color:#888; margin-top:16px;">
+<div *ngIf="!showCreateForm && duties.length === 0 && hasSearched && !loading" class="empty-state">
   No duties found for "<em>{{ searchedAstronautName }}</em>".
 </div>
-
